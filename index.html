@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saurav's Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Shojumaru&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f5f5f5;
+      overflow-x: hidden;
+      line-height: 1.6;
+      transition: background-color 0.5s ease, color 0.5s ease;
+    }
+
+    body.cool-theme {
+      background-color: #1a1a1a;
+      color: #fff;
+      font-family: 'Shojumaru', cursive;
+    }
+
+    .cursor-shuriken {
+      position: fixed;
+      width: 20px;
+      height: 20px;
+      background: transparent;
+      border: 2px solid #000;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 1000;
+      transform: translate(-50%, -50%);
+    }
+
+    .loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #1a1a1a;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      transition: opacity 0.5s ease;
+    }
+
+    .loader-img {
+      width: 250px;
+      height: auto;
+      border-radius: 10px;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    .cool-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 0.5rem 1rem;
+      background: linear-gradient(45deg, #ff4d4d, #ff7878);
+      color: white;
+      border: none;
+      border-radius: 20px;
+      font-weight: 600;
+      cursor: pointer;
+      z-index: 100;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .cool-theme .cool-button {
+      background: linear-gradient(45deg, #b71c1c, #ff4d4d);
+      box-shadow: 0 0 10px #ff4d4d;
+    }
+
+    .cool-button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(255, 77, 77, 0.4);
+    }
+
+    .nav-container {
+      background: #222;
+      padding: 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .cool-theme .nav-container {
+      background: #0d0d0d;
+      box-shadow: 0 0 10px #ff4d4d;
+    }
+
+    .nav-list {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-list li a {
+      color: #f4f4f4;
+      text-decoration: none;
+      font-size: 1.1rem;
+      font-weight: 500;
+      transition: color 0.3s ease, transform 0.3s ease;
+    }
+
+    .cool-theme .nav-list li a {
+      color: #ff4d4d;
+      text-shadow: 0 0 5px #ff4d4d;
+    }
+
+    .nav-list li a:hover {
+      color: #ff4d4d;
+      transform: scale(1.1);
+    }
+
+    .cool-theme .nav-list li a:hover {
+      color: #ff7878;
+      text-shadow: 0 0 10px #ff7878;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 4rem 2rem;
+      min-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .cool-theme .hero {
+      background: radial-gradient(circle, #2c0b0b, #1a1a1a);
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 1.5rem;
+    }
+
+    .cool-theme .hero h1 {
+      color: #fff;
+      text-shadow: 0 0 10px #ff4d4d;
+    }
+
+    .hero p {
+      font-size: 1.3rem;
+      color: #555;
+      margin-bottom: 2rem;
+    }
+
+    .cool-theme .hero p {
+      color: #ccc;
+      text-shadow: 0 0 5px #ff4d4d;
+    }
+
+    .cta-button {
+      display: inline-block;
+      padding: 0.8rem 2rem;
+      background: linear-gradient(45deg, #ff4d4d, #ff7878);
+      color: white;
+      text-decoration: none;
+      border-radius: 25px;
+      font-weight: 600;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cool-theme .cta-button {
+      background: linear-gradient(45deg, #b71c1c, #ff4d4d);
+      box-shadow: 0 0 15px #ff4d4d;
+    }
+
+    .cta-button::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.4s ease, height 0.4s ease;
+    }
+
+    .cta-button:hover::after {
+      width: 200px;
+      height: 200px;
+    }
+
+    .cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(255, 77, 77, 0.4);
+    }
+
+    .projects {
+      padding: 4rem 2rem;
+      background: #fff;
+      text-align: center;
+    }
+
+    .cool-theme .projects {
+      background: #1a1a1a;
+    }
+
+    .projects h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 2rem;
+    }
+
+    .cool-theme .projects h2 {
+      color: #fff;
+      text-shadow: 0 0 10px #ff4d4d;
+    }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .project-card {
+      background: #f5f5f5;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      overflow: hidden;
+    }
+
+    .cool-theme .project-card {
+      background: #2c0b0b;
+      border: 2px solid #ff4d4d;
+      box-shadow: 0 0 15px #ff4d4d;
+    }
+
+    .project-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .cool-theme .project-card:hover {
+      box-shadow: 0 8px 16px #ff4d4d;
+    }
+
+    .project-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+
+    .project-card h3 {
+      font-size: 1.5rem;
+      color: #333;
+      margin-bottom: 1rem;
+    }
+
+    .cool-theme .project-card h3 {
+      color: #fff;
+      text-shadow: 0 0 5px #ff4d4d;
+    }
+
+    .project-card p {
+      font-size: 1rem;
+      color: #555;
+      margin-bottom: 1rem;
+    }
+
+    .cool-theme .project-card p {
+      color: #ccc;
+    }
+
+    .project-card a {
+      color: #ff4d4d;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    .cool-theme .project-card a {
+      color: #ff7878;
+      text-shadow: 0 0 5px #ff4d4d;
+    }
+
+    .project-card a:hover {
+      color: #ff7878;
+      text-decoration: underline;
+    }
+
+    .cool-theme .project-card a:hover {
+      color: #fff;
+    }
+
+    footer {
+      background: #222;
+      color: #fff;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .cool-theme footer {
+      background: #0d0d0d;
+      box-shadow: 0 0 10px #ff4d4d;
+    }
+
+    .social-links {
+      margin-bottom: 1rem;
+    }
+
+    .social-links a {
+      color: #ff4d4d;
+      text-decoration: none;
+      margin: 0 0.5rem;
+      font-weight: 500;
+      transition: color 0.3s ease, transform 0.3s ease;
+    }
+
+    .cool-theme .social-links a {
+      color: #ff7878;
+      text-shadow: 0 0 5px #ff4d4d;
+    }
+
+    .social-links a:hover {
+      color: #ff7878;
+      transform: scale(1.1);
+    }
+
+    .cool-theme .social-links a:hover {
+      color: #fff;
+    }
+
+    .email-link {
+      color: #ff4d4d;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .cool-theme .email-link {
+      color: #ff7878;
+      text-shadow: 0 0 5px #ff4d4d;
+    }
+
+    .email-link:hover {
+      color: #ff7878;
+    }
+
+    .cool-theme .email-link:hover {
+      color: #fff;
+    }
+
+    @media (max-width: 768px) {
+      .nav-list {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .hero {
+        padding: 2rem 1rem;
+      }
+
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .loader-img {
+        width: 150px;
+      }
+
+      .projects {
+        padding: 2rem 1rem;
+      }
+
+      .cool-button {
+        top: 10px;
+        right: 10px;
+        padding: 0.4rem 0.8rem;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="cursor-shuriken"></div>
+
+  <div id="loader" class="loader">
+    <img src="./ninja.jpg" alt="Ninja Loader" class="loader-img">
+  </div>
+
+  <button class="cool-button" onclick="toggleCoolTheme()">Cool</button>
+
+  <div id="main-content" class="content-hidden">
+    <header>
+      <nav class="nav-container">
+        <ul class="nav-list">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#work">Work</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" id="home">
+        <h1 data-aos="fade-up" data-aos-duration="1000">Hey, I'm Saurav Kumar Rai<br>Call me Roy</h1>
+        <p data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">Frontend Developer & UI/UX Designer</p>
+        <a href="#projects" class="cta-button" data-aos="fade-up" data-aos-delay="400" data-aos-duration="1000">See My Projects</a>
+      </section>
+
+      <section class="projects" id="projects">
+        <h2 data-aos="fade-up" data-aos-duration="1000">My Projects</h2>
+        <div class="project-grid">
+          <div class="project-card" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
+            <img src="./tictaktoe-screenshot.png" alt="Tic Tac Toe">
+            <h3>Tic Tac Toe</h3>
+            <p>A classic 2-player Tic Tac Toe game built with HTML, CSS, and JavaScript.</p>
+            <a href="./tictactoe.html" target="_blank">Play Game</a>
+          </div>
+          <div class="project-card" data-aos="fade-up" data-aos-delay="400" data-aos-duration="1000">
+            <img src="./sudoku-screenshot.png" alt="Sudoku">
+            <h3>Sudoku</h3>
+            <p>A single-player Sudoku puzzle game built with HTML, CSS, and JavaScript.</p>
+            <a href="./sudoku.html" target="_blank">Play Game</a>
+          </div>
+          <div class="project-card" data-aos="fade-up" data-aos-delay="600" data-aos-duration="1000">
+            <img src="./amazon_logo.png" alt="Amazon Frontend Copy">
+            <h3>Amazon Frontend Copy</h3>
+            <p>A non responsive frontend clone of Amazon's website built with HTML, CSS.</p>
+            <a href="./aindex.html" target="_blank">View Project</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="social-links">
+        <p>Connect with me:</p>
+        <a href="https://github.com/saurav-GLA" target="_blank">GitHub</a>
+        <a href="https://www.linkedin.com/in/saurav-rai-b51371219/" target="_blank">LinkedIn</a>
+        <a href="https://www.instagram.com/sauravrai9943/" target="_blank">Instagram</a>
+      </div>
+      <p><a href="mailto:saurav.rai_cs23@gla.ac.in" class="email-link">Email Me</a></p>
+    </footer>
+  </div>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('DOM fully loaded and parsed');
+      AOS.init({
+        once: true,
+        offset: 100,
+      });
+
+      const loader = document.getElementById('loader');
+      const mainContent = document.getElementById('main-content');
+      const coolButton = document.querySelector('.cool-button');
+
+      if (!loader || !mainContent || !coolButton) {
+        console.error('Critical element missing:', { loader, mainContent, coolButton });
+        return;
+      }
+
+      document.body.classList.remove('cool-theme');
+      localStorage.setItem('theme', 'classic');
+      coolButton.textContent = 'Cool';
+      console.log('Initialized in classic mode with ninja.jpg loader');
+
+      const savedTheme = localStorage.getItem('theme');
+      console.log('Saved theme:', savedTheme);
+      if (savedTheme === 'cool') {
+        document.body.classList.add('cool-theme');
+        coolButton.textContent = 'Classic';
+        console.log('Applied cool theme with ninja.jpg loader');
+      }
+
+      loader.style.opacity = '1';
+      console.log('Loader displayed');
+
+      setTimeout(() => {
+        console.log('Fading out loader');
+        loader.style.opacity = '0';
+        setTimeout(() => {
+          console.log('Hiding loader, showing main content');
+          loader.style.display = 'none';
+          mainContent.classList.remove('content-hidden');
+          mainContent.classList.add('content-visible');
+        }, 500);
+      }, 1500);
+    });
+
+    const shuriken = document.querySelector('.cursor-shuriken');
+    if (shuriken) {
+      document.addEventListener('mousemove', (e) => {
+        shuriken.style.left = e.clientX + 'px';
+        shuriken.style.top = e.clientY + 'px';
+      });
+    } else {
+      console.error('Shuriken cursor element not found');
+    }
+
+    function toggleCoolTheme() {
+      const coolButton = document.querySelector('.cool-button');
+      if (!coolButton) {
+        console.error('Cool button not found during toggle');
+        return;
+      }
+      document.body.classList.toggle('cool-theme');
+      const theme = document.body.classList.contains('cool-theme') ? 'cool' : 'classic';
+      localStorage.setItem('theme', theme);
+      coolButton.textContent = theme === 'cool' ? 'Classic' : 'Cool';
+      console.log('Toggled to theme:', theme);
+    }
+  </script>
+</body>
+</html>
